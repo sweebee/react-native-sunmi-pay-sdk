@@ -1,0 +1,16 @@
+{
+  "name": "sunmi-pay-sdk",
+  "version": "1.0.0",
+  "react-native": "src/index",
+  "source": "src/index",
+  "main": "src/index",
+  "files": [
+    "src",
+    "android"
+  ],
+  "create-react-native-library": {
+    "type": "legacy-module",
+    "languages": "cpp",
+    "version": "0.47.0"
+  }
+}

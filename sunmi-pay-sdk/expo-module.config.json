@@ -1,0 +1,6 @@
+{
+  "platforms": ["ios", "tvos", "android", "web"],
+  "android": {
+    "modules": ["expo.modules.sunmipaysdk.SunmiPaySdkModule"]
+  }
+}
