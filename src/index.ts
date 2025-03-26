@@ -7,3 +7,7 @@ export function setScreenMode(mode): string {
 export function setNavigationBarVisibility(visibility): string {
   return SunmiPaySdk.setNavigationBarVisibility(visibility);
 }
+
+export function setStatusBarDropDownMode(mode):string {
+  return SunmiPaySdk.setStatusBarDropDownMode(mode);
+}

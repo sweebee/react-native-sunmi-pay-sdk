@@ -1,5 +1,5 @@
 {
-  "name": "sunmi-pay-sdk",
+  "name": "react-native-sunmi-pay-sdk",
   "version": "1.0.0",
   "react-native": "src/index",
   "source": "src/index",
@@ -12,5 +12,8 @@
     "type": "legacy-module",
     "languages": "cpp",
     "version": "0.47.0"
+  },
+  "dependencies": {
+    "expo-modules-core": "^2.2.3"
   }
 }

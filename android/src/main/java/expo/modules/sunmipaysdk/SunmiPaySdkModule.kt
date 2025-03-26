@@ -29,6 +29,10 @@ class SunmiPaySdkModule : Module() {
         basicOptV2?.setNavigationBarVisibility(visibility)
     }
 
+    Function("setStatusBarDropDownMode") { mode: Int ->
+        basicOptV2?.setStatusBarDropDownMode(mode)
+    }
+
   }
 
     private fun bindPaySDKService() {
