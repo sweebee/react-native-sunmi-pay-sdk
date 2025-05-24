@@ -17,7 +17,14 @@ class SunmiPaySdkModule : Module() {
     // The module will be accessible from `requireNativeModule('SunmiPaySdk')` in JavaScript.
     Name("SunmiPaySdk")
 
+    // Add more information about the module to help with registration
+    Constants(
+      "MODULE_NAME" to "SunmiPaySdk",
+      "MODULE_VERSION" to "1.0.0"
+    )
+
     OnCreate {
+        Log.d("SunmiPaySdk", "Creating SunmiPaySdk module")
         bindPaySDKService()
     }
 
@@ -36,17 +43,38 @@ class SunmiPaySdkModule : Module() {
   }
 
     private fun bindPaySDKService() {
-        payKernel = SunmiPayKernel.getInstance()
-        payKernel?.initPaySDK(appContext.reactContext, object : SunmiPayKernel.ConnectCallback {
-            override fun onConnectPaySDK() {
-                Log.e("MySunmiPay", "Connected to PaySDK")
-                basicOptV2 = payKernel?.mBasicOptV2
+        try {
+            Log.d("SunmiPaySdk", "Binding PaySDK service")
+            payKernel = SunmiPayKernel.getInstance()
+
+            if (payKernel == null) {
+                Log.e("SunmiPaySdk", "Failed to get SunmiPayKernel instance")
+                return
             }
 
-            override fun onDisconnectPaySDK() {
-                Log.e("MySunmiPay", "Disconnected from PaySDK")
-                basicOptV2 = null
-            }
-        })
+            Log.d("SunmiPaySdk", "Initializing PaySDK")
+            payKernel?.initPaySDK(appContext.reactContext, object : SunmiPayKernel.ConnectCallback {
+                override fun onConnectPaySDK() {
+                    Log.d("SunmiPaySdk", "Connected to PaySDK")
+                    try {
+                        basicOptV2 = payKernel?.mBasicOptV2
+                        if (basicOptV2 == null) {
+                            Log.e("SunmiPaySdk", "Failed to get BasicOptV2 instance")
+                        } else {
+                            Log.d("SunmiPaySdk", "Successfully got BasicOptV2 instance")
+                        }
+                    } catch (e: Exception) {
+                        Log.e("SunmiPaySdk", "Error getting BasicOptV2 instance: ${e.message}")
+                    }
+                }
+
+                override fun onDisconnectPaySDK() {
+                    Log.d("SunmiPaySdk", "Disconnected from PaySDK")
+                    basicOptV2 = null
+                }
+            })
+        } catch (e: Exception) {
+            Log.e("SunmiPaySdk", "Error binding PaySDK service: ${e.message}")
+        }
     }
 }

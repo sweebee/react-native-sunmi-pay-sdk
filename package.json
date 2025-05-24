@@ -1,5 +1,5 @@
 {
-  "name": "react-native-sunmi-pay-sdk",
+  "name": "sunmi-pay-sdk",
   "version": "1.0.0",
   "react-native": "src/index",
   "source": "src/index",

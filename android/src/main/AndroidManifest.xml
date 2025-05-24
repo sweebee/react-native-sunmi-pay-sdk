@@ -1,5 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="expo.modules.sunmipaysdk">
 
+    <queries>
+        <package android:name="com.sunmi.pay.hardware.aidlv2" />
+    </queries>
 
 </manifest>

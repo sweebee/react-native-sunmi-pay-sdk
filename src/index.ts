@@ -1,13 +1,28 @@
 import SunmiPaySdk from './SunmiPaySdkModule';
 
 export function setScreenMode(mode): string {
-  return SunmiPaySdk.setScreenMode(mode);
+  try {
+    return SunmiPaySdk.setScreenMode(mode);
+  } catch (error) {
+    console.error('Error calling setScreenMode:', error);
+    return 'Error: Module not available';
+  }
 }
 
 export function setNavigationBarVisibility(visibility): string {
-  return SunmiPaySdk.setNavigationBarVisibility(visibility);
+  try {
+    return SunmiPaySdk.setNavigationBarVisibility(visibility);
+  } catch (error) {
+    console.error('Error calling setNavigationBarVisibility:', error);
+    return 'Error: Module not available';
+  }
 }
 
-export function setStatusBarDropDownMode(mode):string {
-  return SunmiPaySdk.setStatusBarDropDownMode(mode);
+export function setStatusBarDropDownMode(mode): string {
+  try {
+    return SunmiPaySdk.setStatusBarDropDownMode(mode);
+  } catch (error) {
+    console.error('Error calling setStatusBarDropDownMode:', error);
+    return 'Error: Module not available';
+  }
 }
