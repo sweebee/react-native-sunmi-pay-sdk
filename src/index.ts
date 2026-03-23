@@ -1,28 +1,36 @@
 import SunmiPaySdk from './SunmiPaySdkModule';
 
-export function setScreenMode(mode): string {
-  try {
-    return SunmiPaySdk.setScreenMode(mode);
-  } catch (error) {
-    console.error('Error calling setScreenMode:', error);
-    return 'Error: Module not available';
-  }
+export const ScreenMode = {
+  NORMAL: 0,
+  FULLSCREEN: 1,
+} as const;
+
+export const NavigationBarVisibility = {
+  VISIBLE: 1,
+  HIDDEN: -1,
+} as const;
+
+export const StatusBarDropDownMode = {
+  ENABLED: 0,
+  DISABLED: 1,
+} as const;
+
+type ScreenModeValue = typeof ScreenMode[keyof typeof ScreenMode];
+type NavigationBarVisibilityValue = typeof NavigationBarVisibility[keyof typeof NavigationBarVisibility];
+type StatusBarDropDownModeValue = typeof StatusBarDropDownMode[keyof typeof StatusBarDropDownMode];
+
+export async function connect(): Promise<boolean> {
+  return SunmiPaySdk.connect();
 }
 
-export function setNavigationBarVisibility(visibility): string {
-  try {
-    return SunmiPaySdk.setNavigationBarVisibility(visibility);
-  } catch (error) {
-    console.error('Error calling setNavigationBarVisibility:', error);
-    return 'Error: Module not available';
-  }
+export function setScreenMode(mode: ScreenModeValue) {
+  SunmiPaySdk.setScreenMode(mode);
 }
 
-export function setStatusBarDropDownMode(mode): string {
-  try {
-    return SunmiPaySdk.setStatusBarDropDownMode(mode);
-  } catch (error) {
-    console.error('Error calling setStatusBarDropDownMode:', error);
-    return 'Error: Module not available';
-  }
+export function setNavigationBarVisibility(visibility: NavigationBarVisibilityValue) {
+  SunmiPaySdk.setNavigationBarVisibility(visibility);
+}
+
+export function setStatusBarDropDownMode(mode: StatusBarDropDownModeValue) {
+  SunmiPaySdk.setStatusBarDropDownMode(mode);
 }

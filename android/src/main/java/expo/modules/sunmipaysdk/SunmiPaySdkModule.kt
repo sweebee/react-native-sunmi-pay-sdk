@@ -12,13 +12,34 @@ class SunmiPaySdkModule : Module() {
   private var basicOptV2: BasicOptV2? = null
 
   override fun definition() = ModuleDefinition {
-    // Sets the name of the module that JavaScript code will use to refer to the module. Takes a string as an argument.
-    // Can be inferred from module's class name, but it's recommended to set it explicitly for clarity.
-    // The module will be accessible from `requireNativeModule('SunmiPaySdk')` in JavaScript.
     Name("SunmiPaySdk")
 
-    OnCreate {
-        bindPaySDKService()
+    AsyncFunction("connect") { promise: expo.modules.kotlin.Promise ->
+        payKernel = SunmiPayKernel.getInstance()
+
+        // If the PayNL SDK (or another module) already connected to the
+        // Sunmi PayHardwareService, the singleton already has mBasicOptV2.
+        // Re-calling initPaySDK won't fire the callback, so just reuse it.
+        val existing = payKernel?.mBasicOptV2
+        if (existing != null) {
+            Log.d("MySunmiPay", "Already connected, reusing existing connection")
+            basicOptV2 = existing
+            promise.resolve(true)
+            return@AsyncFunction
+        }
+
+        payKernel?.initPaySDK(appContext.reactContext, object : SunmiPayKernel.ConnectCallback {
+            override fun onConnectPaySDK() {
+                Log.d("MySunmiPay", "Connected to PaySDK")
+                basicOptV2 = payKernel?.mBasicOptV2
+                promise.resolve(true)
+            }
+
+            override fun onDisconnectPaySDK() {
+                Log.d("MySunmiPay", "Disconnected from PaySDK")
+                basicOptV2 = null
+            }
+        })
     }
 
     Function("setScreenMode") { mode: Int ->
@@ -34,19 +55,4 @@ class SunmiPaySdkModule : Module() {
     }
 
   }
-
-    private fun bindPaySDKService() {
-        payKernel = SunmiPayKernel.getInstance()
-        payKernel?.initPaySDK(appContext.reactContext, object : SunmiPayKernel.ConnectCallback {
-            override fun onConnectPaySDK() {
-                Log.e("MySunmiPay", "Connected to PaySDK")
-                basicOptV2 = payKernel?.mBasicOptV2
-            }
-
-            override fun onDisconnectPaySDK() {
-                Log.e("MySunmiPay", "Disconnected from PaySDK")
-                basicOptV2 = null
-            }
-        })
-    }
 }
